@@ -1,0 +1,617 @@
+<!DOCTYPE html><html lang="uz"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><title>Lexo</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+:root{--bg:#0f2036;--c:#183150;--t:#f6f1e4;--m:#9fb3cc;--a:#ffb703;--ok:#7ee8c1;--no:#ff7a6b;--p:#fff6dc;--ink:#10223a}
+*{box-sizing:border-box;margin:0;-webkit-tap-highlight-color:transparent}
+body{background:var(--bg);color:var(--t);font:16px/1.45 ui-rounded,"SF Pro Rounded",system-ui,Roboto,sans-serif;padding:0 16px calc(96px + env(safe-area-inset-bottom))}
+header{display:flex;justify-content:space-between;align-items:center;padding:16px 0}
+.logo{font-size:28px;font-weight:900;letter-spacing:-1px;color:var(--p)}.logo:after{content:".";color:var(--a)}
+.pill{background:var(--c);border-radius:99px;padding:5px 11px;font-size:13px;margin-left:6px}
+main>*{animation:fi .35s both}@keyframes fi{from{opacity:0;transform:translateY(10px)}}
+.mu{color:var(--m);text-align:center;font-size:14px}
+.fc{perspective:900px;height:250px;margin:16px 0}.in{position:relative;height:100%;transition:transform .55s;transform-style:preserve-3d}.fc.f .in{transform:rotateY(180deg)}
+.fs{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:26px;display:grid;place-items:center;text-align:center;padding:20px;font-size:36px;font-weight:900;background:var(--p);color:var(--ink);box-shadow:0 8px 0 #0a1626}
+.bk{transform:rotateY(180deg);background:var(--a)}
+.sp{position:absolute;right:14px;bottom:12px;background:#10223a1a;border:0;border-radius:50%;width:44px;height:44px;font-size:18px}
+.row{display:flex;gap:10px}
+.btn,.op{display:block;width:100%;border:0;border-radius:16px;padding:15px;font:inherit;font-weight:800;color:var(--ink);background:var(--a);margin-top:10px}
+.row .btn{flex:1}.btn.no{background:var(--no)}.btn.ok{background:var(--ok)}
+.op{background:var(--c);color:var(--t);text-align:left;font-weight:600}.op.ok{background:var(--ok);color:var(--ink)}.op.no{background:var(--no);color:var(--ink)}
+.big2{font-size:38px;font-weight:900;text-align:center;margin:18px 0}
+.box{text-align:center;background:var(--c);border-radius:24px;padding:28px 20px;margin-top:20px}.big{font-size:52px}.box p{color:var(--m);margin:8px 0 6px}
+.chips{display:flex;gap:8px;margin:4px 0 12px}.chips button{flex:1;border:0;border-radius:12px;padding:10px 4px;background:var(--c);color:var(--m);font:inherit;font-weight:700}.chips .on{background:var(--a);color:var(--ink)}
+.li,.gc{background:var(--c);border-radius:16px;padding:13px 15px;margin-bottom:8px}.li{display:flex;justify-content:space-between;gap:10px}.li span{color:var(--m);text-align:right}
+code{display:block;color:var(--a);margin:6px 0}
+.pc{background:var(--c);border-radius:22px;padding:18px;margin-bottom:12px;border:2px solid transparent}.pc.act{border-color:var(--a)}.pc h3{display:flex;justify-content:space-between}.pc li{list-style:none;color:var(--m);margin-top:5px}.pc li:before{content:"✓ ";color:var(--ok)}
+.st{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}.st div{background:var(--c);border-radius:16px;padding:12px;text-align:center}.st b{display:block;font-size:22px}.st small{color:var(--m)}
+nav{position:fixed;left:12px;right:12px;bottom:calc(10px + env(safe-area-inset-bottom));display:flex;background:#183150f2;border-radius:22px;padding:6px}
+nav button{flex:1;border:0;background:0;color:var(--m);padding:8px 0;border-radius:16px;font:inherit;font-size:11px}nav i{display:block;font-size:20px;font-style:normal}nav .on{background:#ffb70326;color:var(--a)}
+#sp{position:fixed;inset:0;background:var(--bg);display:grid;place-items:center;z-index:9;transition:opacity .5s,visibility .5s}#sp.h{opacity:0;visibility:hidden}
+#sp .w{font-size:68px;font-weight:900;letter-spacing:-2px;color:var(--p)}#sp .w span{display:inline-block;opacity:0;transform:translateY(40px) rotate(-8deg);animation:up .6s cubic-bezier(.2,1.5,.4,1) forwards}
+@keyframes up{to{opacity:1;transform:none}}
+#sp i{display:block;height:6px;border-radius:3px;background:var(--a);width:0;margin:6px auto 14px;animation:ln .7s .9s forwards}@keyframes ln{to{width:100%}}
+#sp p{color:var(--m);opacity:0;animation:up .5s 1.3s forwards}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01s!important;animation-delay:0s!important;transition-duration:.01s!important}}
+body{background:radial-gradient(800px 480px at 90% -8%,#34588e66,transparent),radial-gradient(600px 460px at -10% 105%,#ffb70326,transparent),var(--bg);background-attachment:fixed}
+.fs{background:linear-gradient(145deg,#fffaf0,#ffeec2)}.bk{background:linear-gradient(145deg,#ffd24d,#ff9f1c)}.fs>div{width:100%}
+.btn{box-shadow:0 5px 0 #b57e00;transition:.1s}.btn.no{box-shadow:0 5px 0 #b3463a}.btn.ok{box-shadow:0 5px 0 #3f9c7d}.btn:active,.op:active{transform:translateY(4px);box-shadow:none}
+.op{border:1px solid #ffffff18;box-shadow:0 3px 0 #0a1626}.gc,.li,.pc,.box,.st div{border:1px solid #ffffff12;box-shadow:0 4px 18px #0004}.gc{cursor:pointer}
+.ph{font-size:17px;font-weight:600;color:#10223a99;margin-top:6px}.en{font-size:15px;font-weight:600;line-height:1.35;margin-top:12px;opacity:.9}.en.d{color:var(--m);text-align:center;margin:12px 0}
+.gl{height:8px;background:var(--c);border-radius:9px;overflow:hidden;margin:0 0 6px}.gl i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--ok));border-radius:9px;transition:width .5s}
+.ti{width:100%;border:2px solid #ffffff22;background:var(--c);color:var(--t);border-radius:16px;padding:14px;font:inherit;font-size:20px;text-align:center;margin-top:12px;outline:0}.ti:focus{border-color:var(--a)}
+.hn{font-size:26px;letter-spacing:5px;text-align:center;color:var(--a);margin:10px 0;min-height:34px}
+.sb{background:var(--c);border:0;color:var(--t);border-radius:50%;width:38px;height:38px;font-size:17px;margin-left:6px}
+.hm{display:grid;grid-template-columns:1fr 1fr;gap:12px}.hm .gc{text-align:center;padding:20px 10px;margin:0}.hm .gc:active{transform:scale(.96)}.hm .mu{font-size:13px}.logo{cursor:pointer}
+.ct{display:block;text-decoration:none;color:var(--ink);text-align:center}nav{gap:2px}nav button{font-size:10px;padding:8px 0}nav i{font-size:19px}
+body{padding-bottom:calc(110px + env(safe-area-inset-bottom));background:radial-gradient(700px 420px at 100% -5%,#3b63a066,transparent),radial-gradient(520px 420px at -10% 100%,#7c5cff26,transparent),var(--bg);background-attachment:scroll}
+body.home nav,body.home .gl{display:none}
+nav{background:#142a46ee;backdrop-filter:blur(14px);border:1px solid #ffffff14;box-shadow:0 8px 30px #0007;gap:2px;bottom:calc(12px + env(safe-area-inset-bottom))}
+nav button{border-radius:16px;font-weight:700}nav .on{background:linear-gradient(135deg,#ffc933,#ff9f1c);color:var(--ink)}
+.bb{border:0;background:#ffffff14;color:var(--t);font:inherit;font-weight:700;padding:8px 15px;border-radius:99px;margin:0 0 10px}
+.h2{font-size:24px;font-weight:900;margin:4px 0 4px}
+.hero{background:linear-gradient(135deg,#2c5aa0,#6c4fe0);border-radius:26px;padding:20px;margin:4px 0 16px;box-shadow:0 10px 30px #6c4fe055}.hero h2{font-size:25px;line-height:1.2;margin:4px 0 14px}.hero small{opacity:.85}
+.hb{height:10px;background:#ffffff30;border-radius:9px;overflow:hidden;margin-bottom:8px}.hb i{display:block;height:100%;background:linear-gradient(90deg,#ffd24d,#7ee8c1);border-radius:9px;transition:width .6s}
+.hm{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.hc{background:linear-gradient(145deg,var(--g,#ffb703,#ff7b00));border-radius:24px;padding:16px;color:#10223a;min-height:132px;display:flex;flex-direction:column;justify-content:flex-end;gap:2px;box-shadow:0 6px 0 #00000040;transition:.12s}
+.hc:active,.tc:active{transform:translateY(4px);box-shadow:none}.hc b{font-size:19px;font-weight:900}.hc small{font-size:12px;opacity:.75;line-height:1.25}
+.ic{width:50px;height:50px;border-radius:16px;background:#ffffff55;display:grid;place-items:center;font-size:27px;margin-bottom:auto}
+.tc{display:flex;gap:14px;align-items:center;background:linear-gradient(135deg,var(--g,#ffb703,#ff7b00));color:#10223a;border-radius:22px;padding:14px;margin-bottom:12px;box-shadow:0 5px 0 #00000040;transition:.12s}.tc .ic{margin:0;flex:none}.tc b{display:block;font-size:17px}.tc small{opacity:.78;font-size:12.5px;line-height:1.3;display:block}.tc em{margin-left:auto;font-size:26px;font-style:normal;opacity:.6}
+.lt{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0}.lb{width:48px;height:52px;border:0;border-radius:14px;background:var(--p);color:var(--ink);font:inherit;font-size:24px;font-weight:900;box-shadow:0 4px 0 #0a1626}.lb.x{opacity:.25;box-shadow:none}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:10px}.mt{border:2px solid transparent;border-radius:16px;background:var(--c);color:var(--t);font:inherit;font-weight:700;padding:16px 8px;min-height:64px;box-shadow:0 3px 0 #0a1626}.mt.sel{border-color:var(--a);background:#ffb70324}.mt.dn{background:var(--ok);color:var(--ink);opacity:.35;pointer-events:none}
+.tt{text-align:center;font-size:26px;font-weight:900;color:var(--a)}
+.pc:nth-of-type(2){background:linear-gradient(145deg,#183150,#274a7a)}.pc:nth-of-type(3){background:linear-gradient(145deg,#2a2150,#5a3f9e)}
+#sp{background:radial-gradient(500px 400px at 50% 40%,#3b63a0aa,transparent),var(--bg)}.lg{width:96px;height:96px;margin:0 auto 18px;border-radius:30px;background:linear-gradient(135deg,#ffc933,#ff7b00);display:grid;place-items:center;font-size:50px;box-shadow:0 12px 40px #ff9f1c66;animation:bn 1.4s ease-in-out infinite alternate}@keyframes bn{to{transform:translateY(-10px) rotate(-5deg)}}
+.chips button{font-size:13px;padding:10px 2px}.sm{color:var(--m);font-size:13px;font-weight:500}
+.gd{background:var(--c);border-radius:16px;margin-bottom:8px;border:1px solid #ffffff12;box-shadow:0 4px 18px #0004;overflow:hidden}
+.gd summary{padding:14px 15px;font-weight:800;cursor:pointer;list-style:none;display:flex;justify-content:space-between;gap:10px}.gd summary::-webkit-details-marker{display:none}.gd summary:after{content:"›";color:var(--a);font-size:22px;line-height:1;transition:.2s}.gd[open] summary:after{transform:rotate(90deg)}
+.gd .bd{padding:0 15px 14px}.gx{margin:6px 0 10px;line-height:1.5}.ex{background:#ffffff0d;border-radius:12px;padding:9px 12px;margin-top:6px}.ex b{display:block}.nt{margin-top:10px;color:var(--ok);font-size:14px}
+</style></head><body>
+<div id=sp><div style=text-align:center><div class=lg>📚</div><div class=w></div><i></i><p>Ingliz tili. Har kuni.</p></div></div>
+<header><span class=logo onclick="go('h')">Lexo</span><div><span class=pill id=sk></span><span class=pill id=pl></span><button class=sb id=sd onclick="mt()">🔔</button></div></header><div class=gl><i id=gb></i></div><main id=m></main>
+<nav><button data-t=w onclick="go('w')"><i>📚</i>Lug'at</button><button data-t=t onclick="go('t')"><i>🧠</i>Test</button><button data-t=x onclick="go('x')"><i>🎯</i>Texnika</button><button data-t=m onclick="go('m')"><i>📖</i>Ko'proq</button><button data-t=p onclick="go('p')"><i>💎</i>Tarif</button><button data-t=a onclick="go('a')"><i>💬</i>Aloqa</button></nav>
+<script src="words.js"></script>
+<script>
+const BOT='learnwlexo_bot',ADM='Maxmazaitovv';
+const $=s=>document.querySelector(s),T=window.Telegram?.WebApp||{};
+T.ready?.();T.BackButton?.onClick?.(()=>bk());T.expand?.();T.setHeaderColor?.('#0f2036');T.setBackgroundColor?.('#0f2036');
+const Q=new URLSearchParams(location.search),U=T.initDataUnsafe?.user?.id;
+let P=+Q.get('p')||0; if(+Q.get('e')*1000<Date.now()||(U&&String(U)!==Q.get('u')))P=0; // obuna holati bot havolasidan keladi
+const AD=Q.get('a')==='1'&&U&&String(U)===Q.get('u');
+const L=s=>s.split(/[;\n]+/).map(x=>x.trim()).filter(Boolean).map(x=>x.split('|'));
+const W0=L(`achieve|erishmoq;improve|yaxshilamoq;knowledge|bilim;decide|qaror qilmoq;enough|yetarli;borrow|qarz olmoq;growth|o'sish;careful|ehtiyotkor;support|qo'llab-quvvatlamoq;remember|eslamoq;experience|tajriba;choose|tanlamoq;opportunity|imkoniyat;delay|kechiktirmoq;honest|halol;prefer|afzal ko'rmoq;solve|hal qilmoq;trust|ishonch;strong|kuchli;arrive|yetib kelmoq;compare|solishtirmoq;avoid|qochmoq;require|talab qilmoq;reduce|kamaytirmoq;either|ikkalasidan biri;recent|so'nggi;benefit|foyda;patient|sabrli;suggest|taklif qilmoq;increase|oshirmoq;allow|ruxsat bermoq;ancient|qadimiy;apply|murojaat qilmoq;argue|bahslashmoq;attempt|urinish;available|mavjud;behavior|xulq-atvor;believe|ishonmoq;boring|zerikarli;brave|jasur;bring|olib kelmoq;build|qurmoq;cause|sabab;certain|aniq, ishonchli;challenge|qiyin sinov;change|o'zgartirmoq;cheap|arzon;complete|tugatmoq;confident|o'ziga ishongan;connect|bog'lamoq;consider|o'ylab ko'rmoq;continue|davom etmoq;create|yaratmoq;creative|ijodkor;customer|mijoz;damage|zarar;dangerous|xavfli;deal|kelishuv;describe|tasvirlamoq;develop|rivojlantirmoq;difference|farq;difficult|qiyin;discover|kashf qilmoq;discuss|muhokama qilmoq;during|davomida;earn|pul topmoq;easy|oson;effort|harakat, kuch;employee|xodim;encourage|ruhlantirmoq;enjoy|zavqlanmoq;environment|atrof-muhit;equal|teng;error|xato;escape|qochib qutulmoq;event|voqea;exactly|aynan;exchange|almashtirmoq;expect|kutmoq;expensive|qimmat;explain|tushuntirmoq;fail|yutqazmoq;fair|adolatli;familiar|tanish;famous|mashhur;fear|qo'rquv;feel|his qilmoq;fix|tuzatmoq;flexible|moslashuvchan;follow|ergashmoq;forget|unutmoq;forgive|kechirmoq;freedom|erkinlik;friendly|do'stona;future|kelajak;gain|qo'lga kiritmoq;generous|saxiy;goal|maqsad;guess|taxmin qilmoq;habit|odat;happen|sodir bo'lmoq;healthy|sog'lom;helpful|yordam beruvchi;hide|yashirmoq;hope|umid;huge|ulkan;ignore|e'tiborsiz qoldirmoq;imagine|tasavvur qilmoq;important|muhim;include|o'z ichiga olmoq;invite|taklif qilmoq;join|qo'shilmoq;journey|sayohat;judge|baholamoq;keep|saqlamoq;lack|yetishmovchilik;lazy|dangasa;lead|yetaklamoq;learn|o'rganmoq;leave|tark etmoq;lend|qarz bermoq;level|daraja;limit|chegara;local|mahalliy;lonely|yolg'iz;lucky|omadli;manage|boshqarmoq;matter|ahamiyatga ega bo'lmoq;maybe|balki;meaning|ma'no;measure|o'lchamoq;mention|tilga olmoq;mistake|yanglishlik;mood|kayfiyat;notice|payqamoq;obvious|ravshan;offer|taklif;order|buyurtma;ordinary|oddiy;plan|reja;polite|xushmuomala;prepare|tayyorlamoq;prevent|oldini olmoq;promise|va'da;protect|himoya qilmoq;provide|ta'minlamoq;purpose|niyat;quick|tez;quiet|tinch;reach|yetib bormoq;realize|anglamoq;receive|qabul qilmoq;refuse|rad etmoq;relax|dam olmoq;rely|tayanmoq;repeat|takrorlamoq;result|natija;reward|mukofot;risk|xavf;safe|xavfsiz;search|qidirmoq;secret|sir;serious|jiddiy;share|ulashmoq;simple|sodda;skill|ko'nikma;smart|aqlli;succeed|muvaffaq bo'lmoq;surprise|ajablantirmoq;survive|omon qolmoq;talent|iste'dod;teach|o'rgatmoq;thought|fikr;tired|charchagan;valuable|qimmatli;wise|dono;worry|xavotir olmoq`);
+const PH=L(`Good morning|Xayrli tong;Good evening|Xayrli kech;How are you doing?|Ishlaringiz qalay?;Nice to meet you|Tanishganimdan xursandman;Long time no see|Ancha vaqt ko'rishmadik;What's up?|Nima gap?;Take care|O'zingizga ehtiyot bo'ling;See you later|Ko'rishguncha;See you tomorrow|Ertagacha;Have a nice day|Kuningiz yaxshi o'tsin;Good luck|Omad tilayman;Congratulations|Tabriklayman;Welcome|Xush kelibsiz;Make yourself at home|O'zingizni uydagidek his qiling;
+My name is...|Mening ismim...;Where are you from?|Siz qayerdansiz?;I'm from Uzbekistan|Men O'zbekistonlikman;What do you do?|Siz nima ish qilasiz?;I'm a student|Men talabaman;How old are you?|Yoshingiz nechada?;Do you speak English?|Inglizcha gapirasizmi?;I speak a little English|Men ozgina inglizcha gapiraman;
+I don't understand|Tushunmayapman;Could you repeat that?|Takrorlab bera olasizmi?;Could you speak slowly?|Sekinroq gapira olasizmi?;What does this mean?|Bu nima degani?;How do you say it in English?|Buni inglizchada qanday aytasiz?;How do you spell it?|Buni qanday yoziladi?;I got it|Tushundim;I see|Tushunarli;
+Can you help me?|Menga yordam bera olasizmi?;Could you do me a favor?|Menga bir yaxshilik qila olasizmi?;Excuse me|Kechirasiz;I'm sorry|Uzr so'rayman;Sorry I'm late|Kechikkanim uchun uzr;Thank you very much|Katta rahmat;You're welcome|Arzimaydi;No problem|Muammo yo'q;It's my pleasure|Mamnuniyat bilan;Never mind|Parvo qilmang;Do you mind if I sit here?|Shu yerga o'tirsam bo'ladimi?;
+How much is it?|Narxi qancha?;It's too expensive|Bu juda qimmat;Do you have a discount?|Chegirma bormi?;I'm just looking|Men shunchaki qarayapman;Can I try it on?|Buni kiyib ko'rsam bo'ladimi?;I'll take it|Men buni olaman;Can I pay by card?|Karta bilan to'lasam bo'ladimi?;Could I have a receipt?|Chek bera olasizmi?;I'm looking for...|Men ... qidiryapman;Do you have a smaller size?|Kichikroq o'lchami bormi?;
+A table for two, please|Ikki kishilik stol, iltimos;Can I see the menu?|Menyuni ko'rsam bo'ladimi?;I'd like to order|Men buyurtma bermoqchiman;I'll have the same|Menga ham shuni;Could we have the bill?|Hisobni olib kela olasizmi?;It was delicious|Juda mazali edi;I'm full|Men to'ydim;I'm hungry|Qornim och;I'm thirsty|Chanqadim;
+Where is the bus stop?|Avtobus bekati qayerda?;How can I get to...?|... ga qanday borsam bo'ladi?;Turn left|Chapga buriling;Turn right|O'ngga buriling;Go straight ahead|To'g'riga yuring;It's on the corner|U burchakda;How far is it?|U qanchalik uzoq?;I'm lost|Men adashib qoldim;Can you show me on the map?|Xaritada ko'rsata olasizmi?;
+It depends|Bunga bog'liq;Of course|Albatta;I'm not sure|Ishonchim komil emas;I think so|Menimcha shunday;I don't think so|Menimcha unday emas;That sounds good|Yaxshi eshitilyapti;I agree with you|Men siz bilan roziman;I'm afraid I can't|Afsuski, qila olmayman;What do you think?|Siz nima deb o'ylaysiz?;In my opinion...|Mening fikrimcha...;As far as I know...|Men bilishimcha...;By the way|Aytgancha;Anyway|Baribir, xullas;Just in case|Har ehtimolga qarshi;It's up to you|Bu sizga bog'liq;Hurry up|Tezroq bo'ling;Wait a moment|Bir daqiqa kuting;Let me think|O'ylab ko'ray;Be careful|Ehtiyot bo'ling;I'm kidding|Hazillashyapman;I miss you|Sizni sog'indim;No problem at all|Hech qisi yo'q;
+I have a meeting|Mening uchrashuvim bor;I'm busy right now|Hozir bandman;I'm on my way|Yo'ldaman;I'll be right back|Hozir qaytaman;Let's keep in touch|Aloqada bo'laylik;Could you send me the details?|Tafsilotlarni yubora olasizmi?;What time is it?|Soat necha?;What's the weather like?|Ob-havo qanday?;
+I don't feel well|O'zimni yomon his qilyapman;I have a headache|Boshim og'riyapti;I need a doctor|Menga shifokor kerak;Get well soon|Tezroq tuzalib keting;
+Good afternoon|Xayrli kun;
+Good night|Xayrli tun;
+How's it going?|Ishlar qalay?;
+How have you been?|Yaxshi yuribsizmi?;
+I'm fine, thanks|Yaxshiman, rahmat;
+Not bad|Yomon emas;
+Pleased to meet you|Tanishganimdan mamnunman;
+This is my friend|Bu mening do'stim;
+Let me introduce myself|O'zimni tanishtirib o'tay;
+It's good to see you|Sizni ko'rganimdan xursandman;
+Say hello to your family|Oilangizga salom ayting;
+Have a good weekend|Dam olish kunlaringiz yaxshi o'tsin;
+Happy birthday|Tug'ilgan kuningiz bilan;
+Happy New Year|Yangi yil bilan;
+Best wishes|Eng yaxshi tilaklar bilan;
+Safe travels|Yo'lingiz bexatar bo'lsin;
+Enjoy your meal|Yoqimli ishtaha;
+Cheers|Sog'lig'ingiz uchun;
+Bless you|Salomat bo'ling (aksirganda);
+Thanks for your help|Yordamingiz uchun rahmat;
+I really appreciate it|Buning uchun chin dildan minnatdorman;
+Don't mention it|Arzimaydi;
+My pleasure|Marhamat, xursandman;
+Sorry to bother you|Bezovta qilganim uchun uzr;
+I apologize for the mistake|Xato uchun uzr so'rayman;
+It's not your fault|Bu sizning aybingiz emas;
+Forgive me|Meni kechiring;
+That's okay|Hechqisi yo'q;
+Could you say that again?|Buni yana aytib bera olasizmi?;
+Pardon?|Kechirasiz, nima dedingiz?;
+What do you mean?|Nima demoqchisiz?;
+I didn't catch that|Buni eshitmay qoldim;
+Please speak up|Iltimos, balandroq gapiring;
+How do you pronounce this word?|Bu so'z qanday talaffuz qilinadi?;
+What's the meaning of this word?|Bu so'zning ma'nosi nima?;
+Could you explain it again?|Buni yana tushuntirib bera olasizmi?;
+I'm still learning English|Men hali ingliz tilini o'rganyapman;
+Can you write it down?|Buni yozib bera olasizmi?;
+Let me know|Menga xabar bering;
+Keep me posted|Yangiliklardan xabardor qilib turing;
+To be honest...|To'g'risini aytganda...;
+Frankly speaking...|Ochig'ini aytsam...;
+In other words...|Boshqacha aytganda...;
+For example|Masalan;
+That reminds me...|Bu menga esimga solyapti...;
+Let's get started|Boshlaylik;
+Let's get back to the point|Mavzuga qaytaylik;
+As I said before...|Avval aytganimdek...;
+Long story short|Qisqasi;
+What a coincidence!|Qanday tasodif!;
+Guess what!|Bilasizmi nima bo'ldi!;
+You're kidding!|Hazillashyapsiz-ku!;
+No way!|Ishonmayman! (Mumkin emas!);
+Really?|Rostdanmi?;
+Exactly|Aynan shunday;
+You're right|Siz haqsiz;
+That's true|Bu rost;
+I couldn't agree more|Yuz foiz roziman;
+I disagree|Men rozi emasman;
+I see your point, but...|Fikringizni tushundim, lekin...;
+That makes sense|Bu mantiqan to'g'ri;
+It's a good idea|Bu yaxshi fikr;
+I have no idea|Hech qanday fikrim yo'q;
+I'm not sure what to do|Nima qilishni bilmayapman;
+Let me check|Tekshirib ko'ray;
+I'll think about it|Bu haqda o'ylab ko'raman;
+Maybe next time|Balki keyingi safar;
+Fingers crossed|Omad tilab turing;
+Where is the airport?|Aeroport qayerda?;
+I'd like to book a ticket|Men bilet band qilmoqchiman;
+A one-way ticket, please|Bir tomonlama bilet, iltimos;
+A return ticket, please|Qaytish bilan bilet, iltimos;
+What time does the flight leave?|Reys soat nechada uchadi?;
+My flight is delayed|Mening reysim kechikyapti;
+Where is the check-in desk?|Ro'yxatdan o'tish stoli qayerda?;
+Here is my passport|Mana mening pasportim;
+I have nothing to declare|Deklaratsiya qiladigan narsam yo'q;
+Where can I get my luggage?|Yukimni qayerdan olsam bo'ladi?;
+I lost my luggage|Yukim yo'qolib qoldi;
+What gate is it?|Bu qaysi darvoza (gate)?;
+Is this seat taken?|Bu o'rindiq band emasmi?;
+How long does it take?|Bu qancha vaqt oladi?;
+Does this train go to...?|Bu poyezd ... ga boradimi?;
+Which platform?|Qaysi platforma?;
+I missed my train|Poyezdimdan kechikdim;
+Where can I buy a ticket?|Biletni qayerdan sotib olsam bo'ladi?;
+Please take me to this address|Meni shu manzilga olib boring;
+Stop here, please|Shu yerda to'xtang, iltimos;
+Keep the change|Qaytimini olib qoling;
+I have a reservation|Menda bron bor;
+I'd like to book a room|Men xona band qilmoqchiman;
+How much is a room per night?|Xona bir kechaga qancha turadi?;
+Is breakfast included?|Nonushta narxga kiradimi?;
+What time is check-out?|Xonadan chiqish vaqti soat nechada?;
+Could I have the key, please?|Kalitni olsam bo'ladimi?;
+The Wi-Fi isn't working|Wi-Fi ishlamayapti;
+What's the Wi-Fi password?|Wi-Fi paroli nima?;
+Could you wake me up at 7?|Meni soat 7 da uyg'ota olasizmi?;
+Can I get a late check-out?|Xonadan kechroq chiqsam bo'ladimi?;
+Could I see the wine list?|Vino ro'yxatini ko'rsam bo'ladimi?;
+What do you recommend?|Nimani tavsiya qilasiz?;
+I'm allergic to nuts|Menda yong'oqqa allergiya bor;
+I'm vegetarian|Men vegetarianman;
+No sugar, please|Shakarsiz, iltimos;
+Could I have some water?|Biroz suv bersangiz bo'ladimi?;
+Could we get the check, please?|Hisobni olib kelsangiz bo'ladimi?;
+Is service included?|Xizmat haqi hisobga kiradimi?;
+This is not what I ordered|Men buni buyurtma qilmagan edim;
+The food is cold|Ovqat sovib qolibdi;
+It tastes great|Mazasi ajoyib;
+Takeaway or eat in?|Olib ketasizmi yoki shu yerda yeysizmi?;
+To go, please|Olib ketaman, iltimos;
+How much does this cost?|Bu qancha turadi?;
+Do you accept credit cards?|Kredit kartani qabul qilasizmi?;
+Can I get a refund?|Pulni qaytarib olsam bo'ladimi?;
+I'd like to return this|Buni qaytarmoqchiman;
+Do you have this in another color?|Buning boshqa rangi bormi?;
+It doesn't fit|Bu menga to'g'ri kelmayapti;
+It's too big|U juda katta;
+It's too small|U juda kichik;
+Where is the fitting room?|Kiyib ko'rish xonasi qayerda?;
+Is this on sale?|Bu chegirmadami?;
+That's a good deal|Bu yaxshi taklif;
+Can you give me a discount?|Chegirma qila olasizmi?;
+Could you wrap it as a gift?|Buni sovg'a qilib o'rab bera olasizmi?;
+What's your return policy?|Qaytarish qoidalaringiz qanday?;
+Where is the checkout?|Kassa qayerda?;
+I work as a teacher|Men o'qituvchi bo'lib ishlayman;
+I work for a big company|Men katta kompaniyada ishlayman;
+I'm self-employed|Men o'zim uchun ishlayman;
+I'm in charge of this project|Bu loyiha uchun men javobgarman;
+Let's schedule a meeting|Uchrashuv belgilaylik;
+Can we reschedule?|Uchrashuv vaqtini o'zgartirsak bo'ladimi?;
+I'll send you an email|Sizga elektron xat yuboraman;
+Please find the attachment|Iltimos, ilova qilingan faylni ko'ring;
+I'm working on it|Ustida ishlayapman;
+The deadline is Friday|Muddat juma kuni;
+I'll get back to you|Sizga javob qaytaraman;
+Let's discuss it|Buni muhokama qilaylik;
+I'm running late|Kechikib qolyapman;
+I'm on a business trip|Men xizmat safaridaman;
+I need a day off|Menga bir kunlik dam kerak;
+I'm looking for a job|Men ish qidiryapman;
+I have ten years of experience|Mening o'n yillik tajribam bor;
+When can you start?|Qachon ishni boshlay olasiz?;
+Thank you for your time|Vaqtingizni ajratganingiz uchun rahmat;
+Best regards|Hurmat bilan;
+Looking forward to hearing from you|Javobingizni kutaman;
+Hello, who's calling?|Allo, kim qo'ng'iroq qilyapti?;
+This is ... speaking|Men ... gapiryapman;
+Can I speak to...?|... bilan gaplashsam bo'ladimi?;
+Hold on, please|Biroz kuting, iltimos;
+I'll put you through|Sizni ulab beraman;
+He is not available right now|U hozir band;
+Can I leave a message?|Xabar qoldirsam bo'ladimi?;
+Please call me back|Iltimos, menga qayta qo'ng'iroq qiling;
+The line is busy|Liniya band;
+I can't hear you|Sizni eshitmayapman;
+You have the wrong number|Siz noto'g'ri raqamga qo'ng'iroq qildingiz;
+My battery is dead|Telefonimning quvvati tugadi;
+Text me later|Keyinroq menga SMS yozing;
+I have a fever|Isitmam bor;
+I have a sore throat|Tomog'im og'riyapti;
+I have a stomachache|Qornim og'riyapti;
+I feel dizzy|Boshim aylanyapti;
+I've caught a cold|Shamollab qoldim;
+I cut my finger|Barmog'imni kesib oldim;
+Do I need a prescription?|Retsept kerakmi?;
+How often should I take it?|Buni qanchalik tez-tez ichishim kerak?;
+Where is the nearest pharmacy?|Eng yaqin dorixona qayerda?;
+Call an ambulance!|Tez yordam chaqiring!;
+I'm allergic to penicillin|Menda penitsillinga allergiya bor;
+I need to see a dentist|Menga tish shifokori kerak;
+Take two tablets a day|Kuniga ikkita tabletka iching;
+Drink plenty of water|Ko'p suv iching;
+I'm feeling much better|O'zimni ancha yaxshi his qilyapman;
+Help!|Yordam bering!;
+Call the police!|Politsiyani chaqiring!;
+There's been an accident|Hodisa yuz berdi;
+I've been robbed|Meni o'g'irlashdi;
+My wallet was stolen|Hamyonim o'g'irlandi;
+Fire!|Yong'in!;
+I need help|Menga yordam kerak;
+Where is the nearest hospital?|Eng yaqin kasalxona qayerda?;
+I'm so happy|Men juda xursandman;
+I'm tired|Men charchadim;
+I'm exhausted|Men juda charchab qoldim;
+I'm worried about...|Men ... haqida xavotirdaman;
+I'm excited|Men hayajondaman;
+I'm bored|Zerikdim;
+I'm proud of you|Siz bilan faxrlanaman;
+I'm so nervous|Juda hayajonlanyapman;
+I'm upset|Xafaman;
+I'm fed up with this|Bundan to'ydim;
+I feel like...|Mening ... qilgim kelyapti;
+I can't wait|Sabrsizlik bilan kutyapman;
+It's driving me crazy|Bu meni jinni qilyapti;
+I'm in a good mood|Kayfiyatim yaxshi;
+Cheer up!|Ko'nglingizni ko'taring!;
+Don't worry|Xavotir olmang;
+Calm down|Tinchlaning;
+Take it easy|Shoshmang, xotirjam bo'ling;
+What day is it today?|Bugun hafta kunlari qaysi?;
+It's half past three|Soat uch yarim;
+It's a quarter to five|Soat beshga chorak qoldi;
+See you at noon|Tush payti ko'rishamiz;
+It's raining|Yomg'ir yog'yapti;
+It's snowing|Qor yog'yapti;
+It's sunny|Havo quyoshli;
+It's windy today|Bugun shamolli;
+It's freezing outside|Tashqarida sovuq qotib ketadi;
+It's very hot|Juda issiq;
+What's the forecast for tomorrow?|Ertangi ob-havo qanday bo'ladi?;
+Is it going to rain?|Yomg'ir yog'adimi?;
+I'm early|Men erta keldim;
+You're late|Siz kechikdingiz;
+Just a minute|Bir daqiqa;
+In a few minutes|Bir necha daqiqadan keyin;
+Once in a while|Ba'zida, ora-sira;
+From time to time|Vaqti-vaqti bilan;
+As soon as possible|Imkon qadar tezroq;
+At the last minute|Oxirgi daqiqada;
+Right away|Darhol;
+All day long|Kun bo'yi;
+I have an exam tomorrow|Ertaga imtihonim bor;
+I need to study for the test|Test uchun tayyorlanishim kerak;
+I passed the exam|Imtihondan o'tdim;
+I failed the test|Testdan o'ta olmadim;
+Could you help me with my homework?|Uy vazifam bilan yordam bera olasizmi?;
+Practice makes perfect|Mashq mukammallikka olib keladi;
+I take English lessons|Men ingliz tili darslariga qatnayman;
+I read every day|Men har kuni o'qiyman;
+Don't give up|Taslim bo'lmang;
+Keep going|Davom eting;
+You're doing great|Siz juda yaxshi qilyapsiz;
+Well done|Barakalla;
+Piece of cake|Juda oson ish;
+Break a leg|Omad tilayman (chiqishdan oldin);
+Better late than never|Hech qachon bo'lmagandan kech bo'lgani yaxshi;
+Time flies|Vaqt o'tib ketmoqda;
+Once in a blue moon|Juda kamdan-kam;
+It costs an arm and a leg|Bu juda qimmat;
+Actions speak louder than words|Ish gapdan ko'ra ko'proq narsa aytadi;
+Easier said than done|Aytish oson, qilish qiyin;
+Let's call it a day|Bugunga yetar, tugataylik;
+Hit the books|Qattiq o'qishga tushmoq;
+Under the weather|O'zini yomon his qilmoq;
+The ball is in your court|Navbat sizda;
+Out of the blue|To'satdan, kutilmaganda;
+Back to square one|Yana boshiga qaytmoq;
+That's the last straw|Sabr kosasi to'ldi;
+Beat around the bush|Gapni aylantirmoq;
+Bite the bullet|Chidab, qiyin ishni qilmoq;
+It's a deal|Kelishdik;
+Give it a try|Bir urinib ko'ring;
+Make up your mind|Qaroringizni qiling;
+Let it go|Qo'yib yuboring;
+Mind your own business|O'z ishingiz bilan bo'ling;
+You can say that again|Rost aytasiz;
+Sleep on it|Bir kecha o'ylab ko'ring;
+May I come in?|Kirsam bo'ladimi?;
+Can I borrow your pen?|Qalamingizni olib tursam bo'ladimi?;
+Would you mind opening the window?|Derazani ochib bera olasizmi?;
+Could you pass me the salt?|Tuzni uzata olasizmi?;
+Is it okay if I leave early?|Erta ketsam bo'ladimi?;
+Do you need any help?|Yordam kerakmi?;
+Let me help you|Yordam beray;
+Can I take a message?|Xabar qoldiraymi?;
+I'd like to ask a question|Savol bermoqchiman;
+Could I use your phone?|Telefoningizdan foydalansam bo'ladimi?;
+After you|Marhamat, siz oldin;
+Go ahead|Marhamat, boshlang;
+Is there a bank near here?|Bu yerda yaqin atrofda bank bormi?;
+Where is the nearest ATM?|Eng yaqin bankomat qayerda?;
+Where is the toilet?|Hojatxona qayerda?;
+Is it far from here?|U bu yerdan uzoqmi?;
+It's a five-minute walk|Besh daqiqalik yo'l piyoda;
+It's next to the bank|U bankning yonida;
+It's across the street|U ko'chaning narigi tomonida;
+It's opposite the park|U bog'ning qarshisida;
+Take the second left|Ikkinchi chapga buriling;
+Go past the traffic lights|Svetoforlardan o'ting;
+You can't miss it|Uni topmay qolmaysiz;
+Is this the right way to...?|... ga boradigan yo'l shumi?;
+I wake up at 7|Men soat 7 da uyg'onaman;
+I'm going to bed|Uxlagani ketyapman;
+I'm cooking dinner|Kechki ovqat tayyorlayapman;
+I'm going shopping|Xarid qilgani ketyapman;
+What are you up to?|Nima qilyapsiz?;
+What are your plans for the weekend?|Dam olish kunlari rejalaringiz qanday?;
+I'd love to!|Mamnuniyat bilan!;
+Let's go for a walk|Sayr qilgani chiqaylik;
+Do you want to grab a coffee?|Bir piyola qahva ichamizmi?;
+I'll pick you up at 6|Sizni soat 6 da olib ketaman;
+Let's meet at the café|Kafeda uchrashaylik;
+I'm looking forward to it|Buni intizorlik bilan kutyapman;
+I used to live in Samarkand|Men ilgari Samarqandda yashardim;
+It's been a long day|Uzoq kun bo'ldi;
+I'm broke|Pulim yo'q;
+I can't afford it|Bunga pulim yetmaydi`);
+const VB=L(`be|was / were|been|bo'lmoq;become|became|become|aylanmoq;begin|began|begun|boshlamoq;bend|bent|bent|egmoq;bind|bound|bound|bog'lamoq;bite|bit|bitten|tishlamoq;bleed|bled|bled|qon ketmoq;blow|blew|blown|esmoq, puflamoq;break|broke|broken|sindirmoq;breed|bred|bred|ko'paytirmoq;bring|brought|brought|olib kelmoq;build|built|built|qurmoq;burn|burnt|burnt|yonmoq;buy|bought|bought|sotib olmoq;catch|caught|caught|ushlamoq;choose|chose|chosen|tanlamoq;come|came|come|kelmoq;cost|cost|cost|turmoq (narxi);creep|crept|crept|sudralmoq;cut|cut|cut|kesmoq;deal|dealt|dealt|shug'ullanmoq;dig|dug|dug|qazimoq;do|did|done|qilmoq;draw|drew|drawn|chizmoq;dream|dreamt|dreamt|tush ko'rmoq;drink|drank|drunk|ichmoq;drive|drove|driven|haydamoq;eat|ate|eaten|yemoq;fall|fell|fallen|yiqilmoq;feed|fed|fed|boqmoq;feel|felt|felt|his qilmoq;fight|fought|fought|jang qilmoq;find|found|found|topmoq;fly|flew|flown|uchmoq;forbid|forbade|forbidden|taqiqlamoq;forget|forgot|forgotten|unutmoq;forgive|forgave|forgiven|kechirmoq;freeze|froze|frozen|muzlamoq;get|got|got|olmoq, bo'lmoq;give|gave|given|bermoq;go|went|gone|bormoq;grow|grew|grown|o'smoq;hang|hung|hung|osmoq;have|had|had|ega bo'lmoq;hear|heard|heard|eshitmoq;hide|hid|hidden|yashirmoq;hit|hit|hit|urmoq;hold|held|held|ushlab turmoq;hurt|hurt|hurt|og'ritmoq;keep|kept|kept|saqlamoq;know|knew|known|bilmoq;lay|laid|laid|yotqizmoq, qo'ymoq;lead|led|led|yetaklamoq;learn|learnt|learnt|o'rganmoq;leave|left|left|tark etmoq;lend|lent|lent|qarz bermoq;let|let|let|ruxsat bermoq;lie|lay|lain|yotmoq;light|lit|lit|yoqmoq;lose|lost|lost|yo'qotmoq;make|made|made|yasamoq;mean|meant|meant|anglatmoq;meet|met|met|uchrashmoq;pay|paid|paid|to'lamoq;put|put|put|qo'ymoq;quit|quit|quit|tashlamoq;read|read|read|o'qimoq;ride|rode|ridden|minmoq;ring|rang|rung|jiringlamoq;rise|rose|risen|ko'tarilmoq;run|ran|run|yugurmoq;say|said|said|aytmoq;see|saw|seen|ko'rmoq;seek|sought|sought|izlamoq;sell|sold|sold|sotmoq;send|sent|sent|yubormoq;set|set|set|o'rnatmoq;shake|shook|shaken|silkitmoq;shine|shone|shone|porlamoq;shoot|shot|shot|otmoq;show|showed|shown|ko'rsatmoq;shut|shut|shut|yopmoq;sing|sang|sung|kuylamoq;sink|sank|sunk|cho'kmoq;sit|sat|sat|o'tirmoq;sleep|slept|slept|uxlamoq;slide|slid|slid|sirpanmoq;smell|smelt|smelt|hidlamoq;speak|spoke|spoken|gapirmoq;spell|spelt|spelt|harflab aytmoq;spend|spent|spent|sarflamoq;spread|spread|spread|yoymoq;stand|stood|stood|turmoq;steal|stole|stolen|o'g'irlamoq;sweep|swept|swept|supurmoq;swim|swam|swum|suzmoq;take|took|taken|olmoq;teach|taught|taught|o'rgatmoq;tear|tore|torn|yirtmoq;tell|told|told|aytib bermoq;think|thought|thought|o'ylamoq;throw|threw|thrown|uloqtirmoq;understand|understood|understood|tushunmoq;wake|woke|woken|uyg'onmoq;wear|wore|worn|kiymoq;win|won|won|yutmoq;withdraw|withdrew|withdrawn|qaytarib olmoq;write|wrote|written|yozmoq;
+arise|arose|arisen|paydo bo'lmoq;
+awake|awoke|awoken|uyg'onmoq;
+bear|bore|borne|ko'tarmoq, chidamoq;
+beat|beat|beaten|urmoq, yengmoq;
+behold|beheld|beheld|tikilib qaramoq;
+bet|bet|bet|garov bog'lamoq;
+bid|bid|bid|narx taklif qilmoq;
+broadcast|broadcast|broadcast|efirga uzatmoq;
+burst|burst|burst|portlamoq, yorilmoq;
+cast|cast|cast|tashlamoq, rol bermoq;
+cling|clung|clung|yopishib olmoq;
+dive|dove / dived|dived|sho'ng'imoq;
+fling|flung|flung|irg'itmoq;
+forecast|forecast|forecast|bashorat qilmoq;
+foresee|foresaw|foreseen|oldindan ko'ra bilmoq;
+foretell|foretold|foretold|bashorat qilmoq;
+forsake|forsook|forsaken|tark etmoq;
+grind|ground|ground|maydalamoq;
+kneel|knelt|knelt|tiz cho'kmoq;
+knit|knit|knit|to'qimoq;
+leap|leapt|leapt|sakramoq;
+mislay|mislaid|mislaid|qo'yib, yo'qotib qo'ymoq;
+mislead|misled|misled|yo'ldan ozdirmoq;
+misspell|misspelt|misspelt|xato yozmoq;
+mistake|mistook|mistaken|adashtirmoq;
+mow|mowed|mown|o't o'rmoq;
+outdo|outdid|outdone|ustun kelmoq;
+outgrow|outgrew|outgrown|ulg'ayib o'tmoq;
+overcome|overcame|overcome|yengib o'tmoq;
+overeat|overate|overeaten|ko'p yemoq;
+overhear|overheard|overheard|tasodifan eshitib qolmoq;
+oversleep|overslept|overslept|uxlab qolmoq;
+overtake|overtook|overtaken|quvib o'tmoq;
+partake|partook|partaken|ishtirok etmoq;
+prove|proved|proven|isbotlamoq;
+rebuild|rebuilt|rebuilt|qayta qurmoq;
+redo|redid|redone|qaytadan qilmoq;
+repay|repaid|repaid|qaytarmoq (qarzni);
+rethink|rethought|rethought|qayta o'ylamoq;
+rewrite|rewrote|rewritten|qayta yozmoq;
+rid|rid|rid|xalos qilmoq;
+saw|sawed|sawn|arralamoq;
+sew|sewed|sewn|tikmoq;
+shear|sheared|shorn|qirqmoq (jun);
+shed|shed|shed|to'kmoq, to'kib tashlamoq;
+shrink|shrank|shrunk|qisqarmoq;
+sling|slung|slung|otmoq, uloqtirmoq;
+slit|slit|slit|yormoq, kesmoq;
+sow|sowed|sown|ekmoq (urug');
+speed|sped|sped|tezlashmoq;
+spill|spilt|spilt|to'kib yubormoq;
+spin|spun|spun|aylantirmoq, yigirmoq;
+spit|spat|spat|tupurmoq;
+split|split|split|bo'lmoq, yormoq;
+spoil|spoilt|spoilt|buzmoq;
+spring|sprang|sprung|sakramoq;
+stick|stuck|stuck|yopishtirmoq;
+sting|stung|stung|chaqmoq;
+stink|stank|stunk|sassiq hid chiqarmoq;
+stride|strode|stridden|katta qadam tashlamoq;
+strike|struck|struck|urmoq, urib o'tmoq;
+string|strung|strung|ipga tizmoq;
+strive|strove|striven|intilmoq;
+swear|swore|sworn|qasam ichmoq;
+swell|swelled|swollen|shishmoq;
+swing|swung|swung|tebranmoq, silkitmoq;
+thrust|thrust|thrust|turtib kiritmoq;
+tread|trod|trodden|bosib yurmoq;
+undergo|underwent|undergone|boshdan kechirmoq;
+undertake|undertook|undertaken|zimmasiga olmoq;
+undo|undid|undone|bekor qilmoq, yechmoq;
+unwind|unwound|unwound|o'ramini yechmoq, dam olmoq;
+uphold|upheld|upheld|qo'llab-quvvatlamoq;
+upset|upset|upset|xafa qilmoq;
+weave|wove|woven|to'qimoq (mato);
+weep|wept|wept|yig'lamoq;
+wet|wet|wet|ho'llamoq;
+wind|wound|wound|o'ramoq, buramoq;
+withhold|withheld|withheld|bermay turmoq, yashirmoq;
+withstand|withstood|withstood|bardosh bermoq;
+wring|wrung|wrung|siqib olmoq;
+bust|bust|bust|sindirmoq, sinmoq;
+lean|leant|leant|suyanmoq;
+clothe|clad|clad|kiyintirmoq;
+shoe|shod|shod|taqa qoqmoq;
+slay|slew|slain|o'ldirmoq;
+smite|smote|smitten|qattiq urmoq;
+sweat|sweat|sweat|terlamoq;
+bless|blessed|blest|duo qilmoq;
+beseech|besought|besought|yolvormoq;
+beget|begot|begotten|tug'dirmoq;
+inlay|inlaid|inlaid|naqsh solmoq;
+input|input|input|kiritmoq (ma'lumot);
+rework|reworked|reworked|qayta ishlamoq`);
+const GRM=[
+["1. Zamonlar jadvali (12 zamon)","Present · Past · Future  ×  Simple · Continuous · Perfect · Perfect Continuous","Inglizchada 3 vaqt (hozirgi, o'tgan, kelasi) bor va har birida 4 ko'rinish: Simple (oddiy ish), Continuous (davom etayotgan), Perfect (tugagan, natijali), Perfect Continuous (davomiylik). Jami 12 zamon.",[["I work. · I am working.", "Ishlayman. · Ishlayapman."], ["I have worked. · I have been working.", "Ishlab bo'ldim. · Ishlab kelyapman."], ["I worked. · I was working.", "Ishladim. · Ishlayotgan edim."], ["I had worked. · I had been working.", "Ishlagan edim. · Ishlab kelayotgan edim."], ["I will work. · I will be working.", "Ishlayman. · Ishlayotgan bo'laman."], ["I will have worked. · I will have been working.", "Ishlab bo'lgan bo'laman. · Ishlab kelgan bo'laman."]],"Simple = V · Continuous = be + V-ing · Perfect = have + V3 · Perfect Continuous = have been + V-ing."],
+["2. To be: am / is / are","I am · he / she / it is · we / you / they are","Bu «bo'lmoq» fe'li. Kim ekanini, qandayligini yoki qayerdaligini aytish uchun kerak. Inglizchada gapda doim fe'l bo'ladi, shuning uchun «Men talabaman» deganda ham am qo'shiladi.",[["I am a student.","Men talabaman."],["She is at home.","U uyda."],["They are happy.","Ular xursand."]],"Inkor: am/is/are + not. Savol: fe'l gap boshiga chiqadi: Are you ready?"],
+["3. Present Simple","I / you / we / they + V · he / she / it + V+s","Har kuni takrorlanadigan ishlar, odatlar va doimiy haqiqatlar uchun. U (he, she, it) bilan fe'lga -s qo'shiladi. Inkor: don't / doesn't + V. Savol: Do / Does + ega + V?",[["She works every day.","U har kuni ishlaydi."],["I don't like tea.","Men choyni yoqtirmayman."],["Does he speak English?","U inglizcha gapiradimi?"]],"Does/doesn't dan keyin -s yo'q: He doesn't work ✅. Belgilari: every day, usually, always, often."],
+["4. Present Continuous","am / is / are + V-ing","Aynan hozir, shu daqiqada bo'layotgan ish uchun. Yaqin rejalarni aytishda ham ishlatiladi.",[["I am studying now.","Men hozir o'qiyapman."],["They are not sleeping.","Ular uxlamayapti."],["What are you doing?","Nima qilyapsiz?"]],"Belgilari: now, at the moment, right now, Look!"],
+["5. Present Perfect","have / has + V3","O'tmishda boshlangan, lekin hozirga aloqasi bor ish. Natija muhim, qachon bo'lgani muhim emas.",[["I have finished my homework.","Men uy vazifamni tugatdim."],["She has lived here for 5 years.","U bu yerda 5 yildan beri yashaydi."],["Have you ever been to Paris?","Siz Parijda bo'lganmisiz?"]],"Belgilari: ever, never, already, yet, just, for, since. Yesterday bilan ishlatilmaydi."],
+["6. Present Perfect Continuous","have / has been + V-ing","O'tmishda boshlanib hozirgacha davom etayotgan yoki hozirgina tugagan, izi ko'rinib turgan ish. Qancha vaqt davom etgani muhim.",[["I have been studying for two hours.", "Men ikki soatdan beri o'qiyapman."], ["She has been working here since 2020.", "U 2020-yildan beri shu yerda ishlaydi."], ["It has been raining all day.", "Kun bo'yi yomg'ir yog'yapti."], ["I'm tired. I have been running.", "Charchadim. Yugurib keldim."]],"Belgilari: for, since, all day, lately, recently, How long...? Know, like kabi fe'llar Continuous bo'lmaydi."],
+["7. Past Simple","V2 (-ed yoki 2-shakl) · did + V","O'tmishda tugagan ish. Qachon bo'lgani ma'lum yoki aytilgan. To'g'ri fe'llarga -ed qo'shiladi, noto'g'rilarning 2-shakli alohida (go → went).",[["I visited Tashkent last year.","Men o'tgan yili Toshkentga bordim."],["He went home.","U uyga ketdi."],["Did you see her?","Siz uni ko'rdingizmi?"]],"Did dan keyin 1-shakl: Did you go ✅ (went emas). Belgilari: yesterday, last week, ago."],
+["8. Past Continuous","was / were + V-ing","O'tmishda ma'lum paytda davom etayotgan ish. Ko'pincha boshqa ish bilan birga aytiladi.",[["I was reading at 8 o'clock.","Soat 8 da men kitob o'qiyotgan edim."],["They were playing when it rained.","Yomg'ir yog'ganda ular o'ynayotgan edi."]],"when — qisqa ish, while — uzoq ish: While I was cooking, he called."],
+["9. Past Perfect","had + V3","O'tmishdagi ikki ishdan avval bo'lgan ishi uchun. «O'sha paytgacha allaqachon qilib bo'lgan edi» ma'nosi.",[["When I arrived, the film had started.", "Men kelganimda film boshlangan edi."], ["She had already left when I called.", "Qo'ng'iroq qilganimda u allaqachon ketgan edi."], ["I hadn't eaten before the exam.", "Imtihondan oldin ovqat yemagan edim."], ["Had you seen him before?", "Siz uni avval ko'rganmidingiz?"]],"Belgilari: already, before, by the time, after. Avval bo'lgan ish — Past Perfect, keyingisi — Past Simple."],
+["10. Past Perfect Continuous","had been + V-ing","O'tmishdagi biror paytgacha davom etib kelgan ish. Qancha vaqt davom etgani ta'kidlanadi.",[["I had been waiting for an hour when she came.", "U kelganida men bir soatdan beri kutayotgan edim."], ["They had been working all night.", "Ular tun bo'yi ishlagan edi."], ["He was tired because he had been running.", "U yugurgani uchun charchagan edi."]],"Belgilari: for, since, how long, all day. Natija emas, jarayon muhim bo'lsa shu zamon ishlatiladi."],
+["11. Present Perfect va Past Simple","have + V3   ≠   V2","Aniq o'tgan vaqt aytilsa (yesterday, in 2010, last week) — Past Simple. Vaqt aytilmasa yoki natija hozirga tegishli bo'lsa — Present Perfect.",[["I have lost my keys.", "Kalitlarimni yo'qotib qo'ydim (hozir ham yo'q)."], ["I saw him yesterday.", "Men uni kecha ko'rdim."], ["Have you ever been to London?", "Londonda bo'lganmisiz?"], ["I went to London in 2019.", "Men 2019-yilda Londonga bordim."]],"Yesterday, ago, last year, in 2015 bilan faqat Past Simple: I have seen him yesterday ❌."],
+["12. Used to / would","used to + V · would + V","O'tmishdagi odat yoki holat, hozir esa yo'q. Used to — odat ham, holat ham; would — faqat takrorlanadigan odat. Inkor: didn't use to + V.",[["I used to play football.", "Men ilgari futbol o'ynardim."], ["She didn't use to like coffee.", "U ilgari qahvani yoqtirmasdi."], ["We would visit grandma every Sunday.", "Biz har yakshanba buvimnikiga borardik."], ["Did you use to live here?", "Siz ilgari shu yerda yashaganmidingiz?"]],"Did dan keyin use to (used emas). Holat uchun faqat used to: I used to be shy ✅, I would be shy ❌."],
+["13. Future Simple: will","will + V","Kelajakdagi ish, va'da, o'sha zahoti qabul qilingan qaror yoki taxmin uchun. Inkor: won't (will not).",[["I will call you.","Men sizga qo'ng'iroq qilaman."],["It will rain tomorrow.","Ertaga yomg'ir yog'adi."],["I won't be late.","Men kechikmayman."]],"Belgilari: tomorrow, next week, soon, I think."],
+["14. Be going to","am / is / are + going to + V","Oldindan rejalashtirilgan niyat yoki ko'rib turgan belgi asosidagi bashorat uchun.",[["I am going to study medicine.","Men tibbiyotni o'qimoqchiman."],["Look at the clouds! It is going to rain.","Bulutlarga qarang! Yomg'ir yog'adi."]],"Reja bo'lsa — going to. To'satdan qaror bo'lsa — will."],
+["15. Future Continuous","will be + V-ing","Kelajakda aniq bir paytda davom etayotgan bo'ladigan ish. Muloyim savol berishda ham ishlatiladi.",[["At 8 tomorrow I will be working.", "Ertaga soat 8 da men ishlayotgan bo'laman."], ["This time next week we will be flying to Dubai.", "Kelasi hafta shu payt biz Dubayga uchib ketayotgan bo'lamiz."], ["Will you be using the car tonight?", "Bugun kechqurun mashinadan foydalanasizmi?"]],"Belgilari: at this time tomorrow, at 5 o'clock tomorrow, this time next week."],
+["16. Future Perfect","will have + V3","Kelajakdagi ma'lum paytgacha tugab bo'lgan bo'ladigan ish.",[["I will have finished by Friday.", "Men juma kunigacha tugatib bo'lgan bo'laman."], ["She will have graduated by 2030.", "U 2030-yilgacha bitirgan bo'ladi."], ["Will you have done it by then?", "O'shagacha buni qilib bo'lgan bo'lasizmi?"]],"Belgilari: by Friday, by next year, by the time, before. By = «...gacha»."],
+["17. Future Perfect Continuous","will have been + V-ing","Kelajakdagi paytga kelib, ish qancha vaqt davom etgan bo'lishini ta'kidlaydi. Amalda kam ishlatiladi.",[["By June I will have been working here for 5 years.", "Iyunga kelib men bu yerda 5 yil ishlagan bo'laman."], ["Next month they will have been living here for a year.", "Kelasi oy ular bu yerda bir yil yashagan bo'ladi."]],"Belgilari: by ... for + davr. Faqat davomiylikni ta'kidlash kerak bo'lganda ishlating."],
+["18. Kelajak uchun Present zamonlari","Present Continuous · Present Simple","Present Continuous — oldindan kelishilgan aniq reja. Present Simple — jadval va dastur (poyezd, dars, kino) bo'yicha ish.",[["I'm meeting Ali tomorrow.", "Ertaga Ali bilan uchrashaman (kelishganmiz)."], ["The train leaves at 6 p.m.", "Poyezd soat 6 da jo'naydi."], ["The lesson starts at 9.", "Dars soat 9 da boshlanadi."], ["We are flying to Dubai on Friday.", "Biz juma kuni Dubayga uchamiz."]],"will — o'sha zahoti qaror, going to — niyat, Present Continuous — kelishilgan reja, Present Simple — jadval."],
+["19. Artikllar: a / an / the","a + undosh · an + unli · the","a / an — «bitta» noaniq narsa, birinchi marta aytilganda. an unli tovushdan oldin keladi. the — aniq, ma'lum yoki dunyoda yagona narsa.",[["I have a car.","Mening mashinam bor."],["She eats an apple.","U olma yeydi."],["The car is red.","(O'sha) mashina qizil."],["The sun is hot.","Quyosh issiq."]],"Umumiy gapda artikl kerak emas: I like music."],
+["20. Ko'plik (plural)","+s · +es · y → ies","Odatda oxiriga -s qo'shiladi. s, x, ch, sh bilan tugasa -es. Undosh + y bo'lsa y → ies.",[["book → books","kitoblar"],["box → boxes","qutilar"],["city → cities","shaharlar"],["man → men, child → children","erkaklar, bolalar"],["woman → women, person → people","ayollar, odamlar"]],"foot → feet, tooth → teeth kabi shakllarni yodlab oling."],
+["21. Modal fe'llar","can / must / should / may + V","Modaldan keyin to'g'ridan-to'g'ri 1-shakl keladi (to va -s yo'q). can — qila olish, must — majburiyat, should — maslahat, may — ruxsat yoki ehtimol.",[["I can swim.","Men suza olaman."],["You must wear a seatbelt.","Siz xavfsizlik kamarini taqishingiz shart."],["You should sleep more.","Siz ko'proq uxlashingiz kerak."],["May I come in?","Kirsam maylimi?"]],"She can sings ❌ → She can sing ✅."],
+["22. There is / There are","There is + birlik · There are + ko'plik","Biror narsa borligini aytish uchun. Birlikda is, ko'plikda are ishlatiladi.",[["There is a book on the table.","Stol ustida kitob bor."],["There are three chairs.","Uchta stul bor."],["Is there a bank near here?","Yaqin atrofda bank bormi?"]],"Inkor: There isn't / There aren't."],
+["23. Solishtirish darajalari","+er than · more + sifat than · the +est","Ikki narsani solishtirishda: qisqa sifatga -er (bigger), uzun sifat oldiga more (more beautiful). Eng yuqori daraja: the + -est yoki the most.",[["This bag is cheaper than that one.","Bu sumka u sumkadan arzon."],["She is more careful than me.","U mendan ehtiyotkorroq."],["He is the tallest in class.","U sinfda eng baland."]],"Istisno: good → better → best, bad → worse → worst."],
+["24. in / on / at (vaqt)","at + soat · on + kun · in + oy, yil","at — aniq vaqt (soat). on — hafta kunlari va sanalar. in — oy, yil, fasl va kun qismlari.",[["at 5 o'clock","soat 5 da"],["on Monday, on 5 May","dushanba kuni, 5-mayda"],["in July, in 2026, in winter","iyulda, 2026-yilda, qishda"],["in the morning","ertalab"]],"Istisno: at night, at the weekend."],
+["25. some / any / much / many","many + sanaladigan · much + sanalmaydigan","Sanaladigan narsalar (kitob, olma) bilan many, sanalmaydigan (suv, vaqt) bilan much. some — darak gapda, any — inkor va savolda. a lot of — hammasi bilan.",[["I have some apples.","Menda bir nechta olma bor."],["Do you have any milk?","Sizda sut bormi?"],["How many books? / How much water?","Nechta kitob? / Qancha suv?"],["We don't have much time.","Bizda vaqt ko'p emas."]],"Taklif qilganda some ishlatiladi: Would you like some tea?"],
+["26. Savol so'zlari","Savol so'zi + do/does/did + ega + V?","What — nima, Where — qayerda, When — qachon, Who — kim, Why — nega, How — qanday. Savol so'zi gap boshiga qo'yiladi, keyin yordamchi fe'l keladi.",[["What do you do?","Siz nima ish qilasiz?"],["Where does she live?","U qayerda yashaydi?"],["Why did you come?","Nega keldingiz?"],["Who called you?","Sizga kim qo'ng'iroq qildi?"]],"Who ega bo'lsa, do kerak emas: Who called you?"],
+["27. Egalik","my · your · his · her · its · our · their · 's","my — meniki, your — sizniki, his — uniki (erkak), her — uniki (ayol), our — bizniki, their — ularniki. Ot bilan: Ali's book — Alining kitobi.",[["This is my bag.","Bu mening sumkam."],["Her name is Dilya.","Uning ismi Dilya."],["It's Ali's car.","Bu Alining mashinasi."]],"Egalik so'zi ot oldidan keladi: my book."],
+["28. too va enough","too + sifat · sifat + enough · enough + ot","too — «ortiqcha, juda» (salbiy ma'noda). enough — «yetarli». Sifatdan keyin enough, otdan oldin enough keladi.",[["It's too hot to go out.", "Tashqariga chiqish uchun juda issiq."], ["He is old enough to drive.", "U mashina haydash uchun yetarlicha katta."], ["We don't have enough time.", "Bizda vaqt yetarli emas."], ["The tea is too sweet.", "Choy juda shirin (ortiqcha)."]],"too much + sanalmaydigan ot, too many + sanaladigan ot: too much sugar, too many cars."],
+["29. have to / must","have to + V · don't have to + V · mustn't + V","have to — majburiyat (qoida yoki holat talab qiladi). don't have to — shart emas. mustn't — mumkin emas (taqiq).",[["I have to wake up early.","Men erta turishim kerak."],["You don't have to come.","Kelishingiz shart emas."],["You mustn't smoke here.","Bu yerda chekish mumkin emas."]],"don't have to ≠ mustn't. Bular boshqa-boshqa ma'no beradi!"],
+["30. Zero Conditional","If + Present Simple, Present Simple","Doim to'g'ri bo'ladigan haqiqatlar va ilmiy qonunlar. If o'rniga when ham mumkin.",[["If you heat ice, it melts.", "Muzni qizdirsangiz, u eriydi."], ["If I don't sleep, I feel tired.", "Uxlamasam, charchagandek bo'laman."], ["Water boils if you heat it to 100°C.", "Suvni 100°C gacha qizdirsangiz, qaynaydi."]],"Ikkala qismda ham Present Simple, will ishlatilmaydi."],
+["31. First Conditional","If + Present Simple, will + V","Kelajakda bo'lishi mumkin bo'lgan shart va uning natijasi. «Agar ... bo'lsa, ... bo'ladi».",[["If it rains, we will stay home.","Yomg'ir yog'sa, uyda qolamiz."],["If you study, you will pass.","O'qisangiz, o'tasiz."]],"If dan keyin will ishlatilmaydi: If it will rain ❌."],
+["32. Second Conditional","If + Past Simple, would + V","Hozirgi yoki kelajakdagi xayoliy, real bo'lishi qiyin vaziyat. «Agar ... bo'lsa edi, ... bo'lardi».",[["If I had a million dollars, I would travel the world.", "Agar millionim bo'lsa edi, dunyoni aylanib chiqardim."], ["If I were you, I would study more.", "Sizning o'rningizda bo'lsam, ko'proq o'qirdim."], ["What would you do if you won the lottery?", "Lotereya yutsangiz nima qilardingiz?"]],"If dan keyin I/he/she/it bilan ko'pincha were: If I were rich ✅. If bo'limida would bo'lmaydi."],
+["33. Third Conditional","If + Past Perfect, would have + V3","O'tmishdagi, o'zgartirib bo'lmaydigan voqea haqida afsus yoki taxmin. «Agar ... bo'lganida, ... bo'lardi».",[["If I had studied, I would have passed.", "Agar o'qiganimda, o'tgan bo'lardim."], ["If she hadn't been late, she would have caught the bus.", "Kechikmaganida, u avtobusga ulgurgan bo'lardi."], ["What would you have done if you had known?", "Bilganingizda nima qilgan bo'lardingiz?"]],"If bo'limida would have bo'lmaydi: If I would have known ❌ → If I had known ✅."],
+["34. Wish (afsus va orzu)","wish + Past Simple · Past Perfect · would","Hozirgi holatdan norozilik — wish + Past Simple. O'tmishdagi afsus — wish + Past Perfect. Boshqaning odatidan noroziligi — wish + would.",[["I wish I had a car.", "Qaniydi mashinam bo'lsa."], ["I wish I were taller.", "Qaniydi bo'yim balandroq bo'lsa."], ["I wish I had studied harder.", "Qaniydi ko'proq o'qiganimda."], ["I wish you would stop talking.", "Qaniydi gapirishni to'xtatsangiz."]],"Wish dan keyin I/he/she bilan ham were ishlatiladi: I wish he were here."],
+["35. Passive (majhul nisbat)","be + V3","Ishni kim qilgani muhim bo'lmasa yoki noma'lum bo'lsa, ish o'zi (nima bo'lgani) asosiy bo'ladi.",[["English is spoken everywhere.","Inglizcha hamma joyda gapiriladi."],["The house was built in 1990.","Uy 1990-yilda qurilgan."],["The letter will be sent tomorrow.","Xat ertaga yuboriladi."]],"be fe'li zamonni belgilaydi: is / was / will be + V3."],
+["36. Passive: barcha zamonlar","be (zamonda) + V3","Majhul nisbatda be fe'li zamonni ko'rsatadi, asosiy fe'l esa doim V3 bo'ladi. Ish qiluvchi kerak bo'lsa by bilan aytiladi.",[["The car is washed every week.", "Mashina har hafta yuviladi. (Present Simple)"], ["The room is being cleaned now.", "Xona hozir tozalanyapti. (Present Continuous)"], ["The work has been done.", "Ish bajarildi. (Present Perfect)"], ["The letter was written yesterday.", "Xat kecha yozildi. (Past Simple)"], ["The bridge will be built next year.", "Ko'prik kelasi yil quriladi. (Future)"]],"Past Perfect: had been done · Past Continuous: was being done · modal: can be done."],
+["37. Reported speech (ko'chirma gap)","said that + zamon bir pog'ona orqaga","Birovning gapini o'z so'zimiz bilan aytib berish. Asosiy fe'l o'tgan zamonda bo'lsa, gapdagi zamon bir pog'ona orqaga suriladi. Ega va payt so'zlari ham o'zgaradi.",[["He said, “I am tired.” → He said he was tired.", "U charchaganini aytdi."], ["“I will help you.” → She said she would help me.", "U menga yordam berishini aytdi."], ["“I have finished.” → He said he had finished.", "U tugatganini aytdi."], ["“Do you like tea?” → She asked if I liked tea.", "U mendan choy yoqtirishimni so'radi."]],"now → then, today → that day, tomorrow → the next day, here → there. Savolda if/whether yoki so'roq so'z, tartib oddiy gapdagidek."],
+["38. Question tags (ajratilgan savol)","gap, + yordamchi fe'l + ega?","Gap oxirida tasdiqlash yoki fikrni so'rash uchun beriladigan qisqa savol. Gap darak bo'lsa tag inkor, gap inkor bo'lsa tag darak bo'ladi.",[["You are a student, aren't you?", "Siz talabasiz, shundaymi?"], ["She doesn't like tea, does she?", "U choyni yoqtirmaydi, a?"], ["They went home, didn't they?", "Ular uyga ketdi, shunday emasmi?"], ["Let's go, shall we?", "Ketaylik, mayli?"]],"I am → aren't I?; Let's → shall we?; buyruq (Open the door) → will you? Ovoz pasaysa — tasdiq, ko'tarilsa — haqiqiy savol."],
+["39. Gerund va Infinitive","V-ing   /   to + V","Ba'zi fe'llardan keyin V-ing (enjoy, finish, mind, avoid, suggest), ba'zilaridan keyin to + V (want, decide, hope, plan, need) keladi. Ba'zilari ikkalasini ham oladi (like, love, start).",[["I enjoy reading.", "Men o'qishni yaxshi ko'raman."], ["She wants to learn English.", "U ingliz tilini o'rganishni xohlaydi."], ["He decided to leave.", "U ketishga qaror qildi."], ["Stop talking! · He stopped to talk.", "Gapirishni bas qiling! · U gaplashish uchun to'xtadi."]],"Predlogdan keyin faqat V-ing: interested in learning ✅. Stop, remember, forget dan keyin ma'no o'zgaradi."],
+["40. Relative clauses (who, which, that)","ot + who / which / that + gap","Otni aniqlaydigan qo'shimcha gap. who — odam, which — narsa, that — odam va narsa, whose — egalik, where — joy.",[["The man who lives next door is a doctor.", "Qo'shni yashaydigan odam shifokor."], ["The book that I bought is interesting.", "Men sotib olgan kitob qiziqarli."], ["This is the girl whose brother is a pilot.", "Bu akasi uchuvchi bo'lgan qiz."], ["That's the café where we met.", "Bu biz uchrashgan kafe."]],"Agar who/which/that gapda ega bo'lmasa, tushirib qoldirish mumkin: The book I bought ✅."],
+["41. Zamon gaplari: when, while, until","when · while · before · after · as soon as · until","Kelajak haqida gapirganda bu so'zlardan keyin will emas, Present Simple ishlatiladi.",[["I will call you when I arrive.", "Yetib borganimda sizga qo'ng'iroq qilaman."], ["Wait here until he comes.", "U kelguncha shu yerda kuting."], ["As soon as I finish, I will go home.", "Tugatishim bilan uyga ketaman."], ["While I was cooking, she was reading.", "Men ovqat pishirayotganimda, u kitob o'qiyotgan edi."]],"when I will arrive ❌ → when I arrive ✅. After/before dan keyin V-ing ham keladi: after eating."],
+];
+const PL=[['Bepul',"0 so'm",["30 ta so'z","Kuniga 30 ta test va mashq",'Kunlik takrorlash va streak']],['Start',"15 000 so'm",["Barcha so'zlar ro'yxati va qidiruv",'Cheksiz test va yodlash texnikalari',"400+ foydali ibora"]],['Pro',"30 000 so'm",["Start dagi hammasi","200+ noto'g'ri fe'l (qidiruv bilan)","41 ta grammatika mavzusi: barcha 12 zamon, shartli gaplar, majhul nisbat va boshqalar",'Statistika']]];
+const SN=new Set(),W=W0.concat(typeof MORE==='string'?L(MORE):[]).filter(w=>w[1]&&!SN.has(w[0].toLowerCase())&&SN.add(w[0].toLowerCase()));
+const NW=P?W.length:30,IV=[0,1,2,4,8,16],K='lexo1',day=()=>Math.floor(Date.now()/864e5);
+let S;try{S=JSON.parse(localStorage[K])}catch{} S=S||{c:{},s:0,l:0,q:0};
+const sv=()=>{try{localStorage[K]=JSON.stringify(S)}catch{}};
+const td=()=>{if(S.td?.d!==day())S.td={d:day(),n:0,q:0}};
+const tick=()=>{td();if(++S.td.n===5){S.s=S.l===day()-1?S.s+1:1;S.l=day()}sv()};
+const sk=()=>S.l>=day()-1?S.s:0;
+let ac,DC={};try{DC=JSON.parse(localStorage.lexod)||{}}catch{}
+const sfx=k=>{if(S.m)return;try{ac=ac||new(window.AudioContext||webkitAudioContext)();const n=ac.currentTime;({ok:[[660,0],[880,.1],[1320,.2]],no:[[220,0],[150,.15]],tap:[[520,0]],flip:[[380,0],[620,.06]],win:[[523,0],[659,.12],[784,.24],[1047,.38]]})[k].forEach(([f,d])=>{const o=ac.createOscillator(),g=ac.createGain();o.type=k=='no'?'sawtooth':'sine';o.frequency.value=f;g.gain.setValueAtTime(.0001,n+d);g.gain.exponentialRampToValueAtTime(.18,n+d+.02);g.gain.exponentialRampToValueAtTime(.0001,n+d+.2);o.connect(g);g.connect(ac.destination);o.start(n+d);o.stop(n+d+.22)})}catch{}};
+const mt=()=>{S.m=!S.m;sv();$('#sd').textContent=S.m?'🔕':'🔔'};
+async function inf(w){const k=w.toLowerCase();if(DC[k])return DC[k];try{const j=(await(await fetch('https://api.dictionaryapi.dev/api/v2/entries/en/'+encodeURIComponent(k))).json())[0],m=j.meanings[0],d=m.definitions[0];DC[k]={t:m.partOfSpeech,d:d.definition,e:d.example||''};try{localStorage.lexod=JSON.stringify(DC)}catch{}return DC[k]}catch{return{}}}
+let FW=null;const fill=w=>inf(w).then(i=>{const e=$('#en');if(e)e.innerHTML=i.d?`<i>${i.t}</i> · ${i.d}`+(i.e?`<br>“${i.e}”`:''):'<small>Meaning yuklanmadi (internet kerak)</small>'});
+document.addEventListener('click',e=>{if(e.target.closest('nav button,.chips button'))sfx('tap')});
+const lk=t=>`<div class=box><div class=big>🔒</div><h3>Yopiq bo'lim</h3><p>${t}</p><button class=btn onclick="go('p')">Tariflarni ko'rish</button></div>`;
+let qs=null,cu=null,sb='i',cur='w';
+const due=()=>{const a=[...Array(NW).keys()];return a.filter(i=>S.c[i]&&S.c[i].d<=day()).concat(a.filter(i=>!S.c[i]).slice(0,10)).slice(0,20)};
+function rw(){
+ if(!qs)qs=due();
+ if(!qs.length)return `<div class=box><div class=big>🎉</div><h3>Bugungi vazifa tugadi!</h3><p>Ertaga takrorlash sizni kutadi. Streak uchun har kuni 5 ta kartochka.</p>${P<2?`<button class=btn onclick="go('p')">Ko'proq imkoniyat</button>`:''}</div>`;
+ const w=W[qs[0]];FW=w[0];
+ return `<p class=mu>${qs.length} ta qoldi. Kartani bosing.</p><div class=fc onclick="if(!event.target.closest('[data-s]')){sfx('flip');this.classList.toggle('f')}"><div class=in><div class=fs><div>${w[0]}</div></div><div class="fs bk"><div>${w[1]}<div class=en id=en></div></div></div></div></div><div class=row><button class="btn no" onclick="ans(0)">Bilmayman</button><button class="btn ok" onclick="ans(1)">Bilaman</button></div>`}
+function ans(k){const i=qs.shift(),c=S.c[i]||{b:0};if(k){c.b=Math.min(c.b+1,5);c.d=day()+IV[c.b]}else{c.b=0;c.d=day();qs.push(i)}S.c[i]=c;tick();sfx(k?'ok':'no');if(!qs.length)setTimeout(()=>sfx('win'),250);T.HapticFeedback?.impactOccurred('light');go('w')}
+function nq(){const i=Math.random()*NW|0,o=[i];while(o.length<4){const j=Math.random()*NW|0;if(!o.some(x=>W[x][1]===W[j][1]))o.push(j)}cu={i,o:o.sort(()=>Math.random()-.5),a:null}}
+function rt(){
+ td();if(!cu){if(P||S.td.q<DL)nq();else cu='lock'}
+ if(cu==='lock')return lk("Bepul tarifda kuniga 30 ta test. Cheksiz test uchun tarifni oching.");
+ FW=W[cu.i][0];return `<p class=mu>${S.td.q}/${P?'∞':DL} · Tarjimasini toping</p><div class=big2>${W[cu.i][0]}</div>`+cu.o.map(j=>`<button class="op ${cu.a===null?'':j===cu.i?'ok':j===cu.a?'no':''}" onclick="pick(${j})">${W[j][1]}</button>`).join('')+(cu.a!==null?`<div class="en d" id=en></div><button class=btn onclick="cu=null;go('t')">Keyingi</button>`:'')}
+function pick(j){if(cu.a!==null)return;cu.a=j;td();S.td.q++;if(j===cu.i)S.q++;sfx(j===cu.i?'ok':'no');sv();go('t')}
+let sq='';
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const hit=a=>{const q=sq.trim().toLowerCase();return !q||a.some(x=>String(x).toLowerCase().includes(q))};
+const emp=`<p class=mu style="margin-top:16px">Hech narsa topilmadi 🔍</p>`,cn=(n,t)=>`<p class=mu style="margin-bottom:8px">${n} ta ${t}</p>`;
+function ll(){
+ if(sb==='i'){const r=PH.filter(hit);return r.length?cn(r.length,'ibora')+r.map(([a,b])=>`<div class=li><b>${a}</b><span>${b}</span></div>`).join(''):emp}
+ if(sb==='v'){const r=VB.filter(hit);return r.length?cn(r.length,"fe'l")+`<div class=li style="background:none;box-shadow:none;border:0;padding:0 15px 4px"><small class=sm>1-shakl</small><small class=sm>2-shakl / 3-shakl</small></div>`+r.map(([a,b,d,u])=>`<div class=li><div><b>${a}</b><br><small class=sm>${u||''}</small></div><span>${b} / ${d}</span></div>`).join(''):emp}
+ if(sb==='w'){const r=W.filter(hit);return r.length?cn(r.length,"so'z")+r.slice(0,80).map(([a,b])=>`<div class=li><b>${a}</b><span>${b}</span></div>`).join('')+(r.length>80?`<p class=mu>Birinchi 80 tasi ko'rsatildi. Qolganini qidiruv orqali toping 🔍</p>`:''):emp}
+ const r=GRM.filter(g=>hit([g[0],g[1],g[2]]));return r.length?r.map(g=>`<details class=gd><summary>${g[0]}</summary><div class=bd><code>${g[1]}</code><p class=gx>${g[2]}</p>${g[3].map(([e,u])=>`<div class=ex><b>${e}</b><small class=sm>${u}</small></div>`).join('')}${g[4]?`<p class=nt>💡 ${g[4]}</p>`:''}</div></details>`).join(''):emp}
+function rm(){
+ const c=`<div class=chips>${[['i','Iboralar'],['v',"Fe'llar"],['w',"So'zlar"],['g','Grammatika']].map(([k,n])=>`<button class="${sb===k?'on':''}" onclick="sb='${k}';sq='';go('m')">${n}</button>`).join('')}</div>`;
+ if(sb==='i'&&P<1)return c+lk("Foydali iboralar Start va Pro tarifida ochiladi.");
+ if(sb==='w'&&P<1)return c+lk("So'zlar ro'yxati va qidiruv Start va Pro tarifida ochiladi.");
+ if((sb==='v'||sb==='g')&&P<2)return c+lk("Bu bo'lim Pro tarifida ochiladi.");
+ return c+`<input class=ti id=qi style="margin:0 0 12px;font-size:17px" value="${esc(sq)}" placeholder="🔍 Qidirish..." autocomplete=off oninput="sq=this.value;$('#ls').innerHTML=ll()"><div id=ls>${ll()}</div>`}
+const DL=30,lock=()=>{td();return !P&&S.td.q>=DL},LK=lk("Bepul tarifda kuniga 30 ta mashq. Cheksiz mashq uchun tarifni oching.");
+const rnd=()=>Math.random()*NW|0,cnt=t=>`<p class=mu>${S.td.q}/${P?'∞':DL} · ${t}</p>`,mq=()=>{const i=rnd(),o=[i];while(o.length<4){const j=rnd();if(!o.some(x=>W[x][1]===W[j][1]))o.push(j)}return{i,o:o.sort(()=>Math.random()-.5)}};
+const TX=[['w','🔁','Intervalli takrorlash',"1, 2, 4, 8, 16 kunlik takror: unutishdan oldin eslatadi",'#ffb703,#ff7b00'],['y','✍️','Yozib eslash',"O'zbekchasini ko'rib inglizchasini yozing (faol eslash)",'#7ee8c1,#2bb3a3'],['s','🧩',"Harflardan yig'ish","Aralash harflardan so'zni tering, imlo yodlanadi",'#b794f6,#6c5ce7'],['p','🃏','Juftlik topish',"Inglizcha va tarjimani juftlang: xotira o'yini",'#ff9ecb,#ff5c8a'],['r','⚡','Tezkor raund',"60 soniyada ko'proq to'g'ri javob bering",'#6ec6ff,#3a7bd5']];
+let tm=null,tc=null,iv=0;
+const bk=()=>{clearInterval(iv);if(cur==='x'&&tm){tm=null;tc=null;go('x')}else go('h')};
+const bt=(t,f)=>`<button class=btn style="background:var(--c);color:var(--t);box-shadow:none" onclick="${f}">${t}</button>`,nx=`<div class="en d" id=en></div><button class=btn onclick="tc=null;go('x')">Keyingi</button>`;
+function sc1(ok){td();S.td.q++;if(ok)S.q++;tick();sfx(ok?'ok':'no');sv()}
+function rx(){
+ if(!tm)return `<h2 class=h2>Yodlash texnikalari</h2><p class=mu style="margin-bottom:12px">5 ta usul. O'zingizga yoqqanini tanlang</p>`+TX.map(x=>`<div class=tc style="--g:${x[4]}" onclick="sfx('tap');${x[0]==='w'?"go('w')":`tm='${x[0]}';tc=null;go('x')`}"><span class=ic>${x[1]}</span><div><b>${x[2]}</b><small>${x[3]}</small></div><em>›</em></div>`).join('')+`<p class=mu style="margin-top:12px">💡 Kuniga 10 tadan ko'p yangi so'z o'rganmang va har birini gapda ishlating.</p>`;
+ if(!(tm==='p'&&tc?.d.size===6)&&!(tm==='r'&&tc)&&lock())return LK;
+ if(tm==='y'){if(!tc)tc={i:rnd(),r:null,h:0,v:''};const w=W[tc.i],a=w[0],hint=a.slice(0,tc.h)+a.slice(tc.h).replace(/[a-z]/gi,'_').split('').join(' ');FW=a;
+  return cnt('Yozib eslash')+`<div class=big2>${w[1]}</div><div class=hn>${tc.r===null?(tc.h?hint:''):(tc.r?'✅ ':'❌ ')+a}</div>`+(tc.r===null?`<input class=ti id=ti value="${tc.v}" placeholder="Inglizchasini yozing" autocomplete=off autocapitalize=off onkeydown="if(event.key=='Enter')chk()"><button class=btn onclick="chk()">Tekshirish</button>`+bt('💡 Maslahat',"tc.v=$('#ti').value;tc.h=Math.min(tc.h+1,W[tc.i][0].length);go('x')"):nx)}
+ if(tm==='s'){if(!tc){let i;do i=rnd();while(W[i][0].length>9||/\s/.test(W[i][0]));const a=W[i][0].toLowerCase();tc={i,L:[...a].map((c,k)=>k).sort(()=>Math.random()-.5),p:[],r:null}}
+  const a=W[tc.i][0].toLowerCase(),got=tc.p.map(k=>a[k]).join('');FW=a;
+  return cnt("Harflardan yig'ish")+`<div class=big2>${W[tc.i][1]}</div><div class=hn>${tc.r===null?(got||'·'):(tc.r?'✅ ':'❌ ')+a}</div>`+(tc.r===null?`<div class=lt>${tc.L.map(k=>`<button class="lb ${tc.p.includes(k)?'x':''}" onclick="lp(${k})">${a[k]}</button>`).join('')}</div>`+bt("⌫ O'chirish","tc.p.pop();go('x')"):nx)}
+ if(tm==='p'){if(!tc){const s=new Set();while(s.size<6)s.add(rnd());const t=[];s.forEach(i=>t.push({i,e:1,x:W[i][0]},{i,e:0,x:W[i][1]}));tc={t:t.sort(()=>Math.random()-.5),o:[],d:new Set(),mv:0,lk:0}}
+  if(tc.d.size===6)return `<div class=box><div class=big>🏆</div><h3>Ofarin!</h3><p>${tc.mv} ta urinishda topdingiz</p><button class=btn onclick="tc=null;go('x')">Yana o'ynash</button></div>`;
+  return cnt('Juftlik topish')+`<p class=mu style="margin-bottom:10px">Inglizcha so'z va uning tarjimasini toping</p><div class=mg>${tc.t.map((x,k)=>`<button class="mt ${tc.d.has(x.i)?'dn':tc.o.includes(k)?'sel':''}" onclick="mp(${k})">${x.x}</button>`).join('')}</div>`}
+ if(tm==='r'){if(!tc)return `<div class=box><div class=big>⚡</div><h3>Tezkor raund</h3><p>60 soniyada iloji boricha ko'p so'zning tarjimasini toping. Har to'g'ri javob +1 ball.</p><button class=btn onclick="sr()">Boshlash</button></div>`;
+  if(!tc.over&&Date.now()>=tc.e)fin();
+  if(tc.over)return `<div class=box><div class=big>🏁</div><h3>${tc.s} ball</h3><p>Rekordingiz: ${S.rb||0}</p><button class=btn onclick="tc=null;go('x')">Qayta urinish</button></div>`;
+  const q=tc.q;return `<div class=tt id=tt>⏱ ${Math.ceil((tc.e-Date.now())/1000)}</div><p class=mu>Ball: ${tc.s}</p><div class=big2>${W[q.i][0]}</div>`+q.o.map(j=>`<button class=op onclick="sa(${j})">${W[j][1]}</button>`).join('')}}
+function chk(){const ok=$('#ti').value.trim().toLowerCase()===W[tc.i][0].toLowerCase();tc.r=ok?1:0;sc1(ok);go('x')}
+function lp(k){if(tc.p.includes(k))return;tc.p.push(k);sfx('tap');const a=W[tc.i][0].toLowerCase();if(tc.p.length===tc.L.length){const ok=tc.p.map(x=>a[x]).join('')===a;tc.r=ok?1:0;sc1(ok)}go('x')}
+function mp(k){if(tc.lk||tc.d.has(tc.t[k].i)||tc.o.includes(k))return;sfx('tap');tc.o.push(k);if(tc.o.length===2){tc.mv++;const[a,b]=tc.o.map(x=>tc.t[x]);if(a.i===b.i&&a.e!==b.e){tc.d.add(a.i);tc.o=[];sfx('ok');if(tc.d.size===6){sfx('win');td();S.td.q+=6;tick();sv()}}else{sfx('no');tc.lk=1;go('x');setTimeout(()=>{tc.o=[];tc.lk=0;go('x')},550);return}}go('x')}
+function sr(){tc={e:Date.now()+6e4,s:0,q:mq()};clearInterval(iv);iv=setInterval(()=>{if(cur!=='x'||tm!=='r'||!tc||tc.over){clearInterval(iv);return}const l=Math.ceil((tc.e-Date.now())/1000);if(l<=0){clearInterval(iv);fin();go('x')}else{const e=$('#tt');if(e)e.textContent='⏱ '+l}},400);go('x')}
+function fin(){tc.over=1;S.rb=Math.max(S.rb||0,tc.s);sv();sfx('win')}
+function sa(j){const ok=j===tc.q.i;if(ok)tc.s++;sc1(ok);if(lock())fin();else tc.q=mq();go('x')}
+function rA(){const l=(t,u)=>`<a class="btn ct" href="${u}" onclick="event.preventDefault();T.openTelegramLink?T.openTelegramLink('${u}'):open('${u}')">${t}</a>`;
+ return `<div class=box><div class=big>📞</div><h3>Aloqa</h3><p>Savol, taklif, to'lov yoki obuna bo'yicha yozing. Tez javob beramiz!</p>${l('💬 Admin: @'+ADM,'https://t.me/'+ADM)}${l('🤖 Bot: @'+BOT,'https://t.me/'+BOT)}</div>`}
+function rh(){const c=[['w','📚',"Lug'at",'Kartochkalar','#ffb703,#ff7b00'],['t','🧠','Test','Savol-javob','#7ee8c1,#2bb3a3'],['x','🎯','Texnika','5 ta usul','#b794f6,#6c5ce7'],['m','📖',"Ko'proq","Ibora, fe'l, so'z, grammatika",'#6ec6ff,#3a7bd5'],['p','💎','Tarif','Obuna','#ff9ecb,#ff5c8a'],['a','💬','Aloqa','Admin bilan','#c3d1e6,#7f93b3']].concat(AD?[['d','🛠','Admin','Obuna berish','#ffd24d,#ff6b6b']]:[]);
+ td();const q=S.td.q,nm=(T.initDataUnsafe?.user?.first_name||'').replace(/[<>&"]/g,'');
+ return `<div class=hero><small>Salom${nm?', '+nm:''} 👋</small><h2>Bugun nimani o'rganamiz?</h2><div class=hb><i style="width:${Math.min(100,q/DL*100)}%"></i></div><small>${q}/${P?'∞':DL} mashq · 🔥 ${sk()} kun ketma-ket</small></div><div class=hm>${c.map(x=>`<div class=hc style="--g:${x[4]}" onclick="sfx('tap');go('${x[0]}')"><span class=ic>${x[1]}</span><b>${x[2]}</b><small>${x[3]}</small></div>`).join('')}</div>`}
+function rd(){if(!AD)return lk("Faqat admin uchun.");return `<h2 class=h2>🛠 Admin</h2><p class=mu style="margin-bottom:12px">Foydalanuvchi ID sini guruhdagi chek xabaridan oling</p><div class=box style="margin:0;text-align:left"><input class=ti id=au type=number inputmode=numeric placeholder="Foydalanuvchi ID" style="margin:0 0 10px"><select class=ti id=ap style="margin:0 0 10px"><option value=1>⭐ Start</option><option value=2>👑 Pro</option><option value=0>🚫 Obunani o'chirish</option></select><input class=ti id=ad type=number inputmode=numeric value=30 placeholder="Necha kun" style="margin:0 0 4px"><button class=btn onclick="ag()">✅ Bajarish</button></div><p class=mu style="margin-top:10px">Tugma bosilganda bot chati ochiladi va obuna o'sha yerda yoqiladi.</p>`}
+function ag(){const i=$('#au').value.trim(),p=$('#ap').value,d=Math.round(+$('#ad').value)||30;if(!/^\d{5,}$/.test(i))return(T.showAlert||alert)("Foydalanuvchi ID ni to'g'ri kiriting");const u=`https://t.me/${BOT}?start=g${i}_${p}_${d}`;if(T.openTelegramLink){T.openTelegramLink(u);setTimeout(()=>T.close?.(),300)}else open(u)}
+function buy(k){const u=`https://t.me/${BOT}?start=buy${k}`;try{if(T.openTelegramLink){T.openTelegramLink(u);setTimeout(()=>{try{T.close()}catch(e){}},1500)}else window.open(u,'_blank')}catch(e){window.open(u,'_blank')}}
+function rp(){
+ const n=Object.values(S.c).filter(c=>c.b>=3).length,e=+Q.get('e');
+ return (P>1?`<div class=st><div><b>${sk()}</b><small>Streak</small></div><div><b>${n}</b><small>O'rganilgan</small></div><div><b>${S.q}</b><small>To'g'ri javob</small></div></div>`:`<div class=box style="padding:14px;margin:0 0 14px"><p style="margin:0">📊 Statistika Pro tarifda ochiladi</p></div>`)
+ +PL.map((p,k)=>`<div class="pc ${P===k?'act':''}"><h3><span>${['🆓','⭐','👑'][k]} ${p[0]}</span><span>${p[1]}</span></h3><ul>${p[2].map(f=>`<li>${f}</li>`).join('')}</ul>${P===k?`<p class=mu style="margin-top:10px">Faol${k&&e?`. ${new Date(e*1000).toLocaleDateString('ru-RU')} gacha`:''}</p>`:k>P?`<button class=btn onclick="buy(${k})">Sotib olish</button>`:''}</div>`).join('')}
+function go(t){cur=t;document.body.classList.toggle('home',t==='h');try{t==='h'?T.BackButton.hide():T.BackButton.show()}catch{}$('#m').innerHTML=(t==='h'?'':`<button class=bb onclick="bk()">← ${t==='x'&&tm?'Texnikalar':"Bo'limlar"}</button>`)+{h:rh,w:rw,t:rt,x:rx,m:rm,p:rp,a:rA,d:rd}[t]();td();$('#gb').style.width=Math.min(100,S.td.n*20)+'%';if(FW){fill(FW);FW=null}$('#sd').textContent=S.m?'🔕':'🔔';document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));$('#sk').textContent='🔥 '+sk();$('#pl').textContent=['🆓 Bepul','⭐ Start','👑 Pro'][P]}
+$('#sp .w').innerHTML=[...'Lexo'].map((c,i)=>`<span style="animation-delay:${.2+i*.12}s">${c}</span>`).join('');
+go('h');setTimeout(()=>$('#sp').classList.add('h'),2100);
+</script></body></html>
